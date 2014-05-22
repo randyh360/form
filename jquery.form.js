@@ -76,14 +76,19 @@ var hasProp = !!$.fn.prop;
 // contains inputs with names like "action" or "method"; in those
 // cases "prop" returns the element
 $.fn.attr2 = function() {
-    if ( ! hasProp ) {
-        return this.attr.apply(this, arguments);
-    }
-    var val = this.prop.apply(this, arguments);
-    if ( ( val && val.jquery ) || typeof val === 'string' ) {
+    var val = this.attr.apply(this, arguments);
+
+    if (typeof val === 'string') {
         return val;
     }
-    return this.attr.apply(this, arguments);
+    else if (hasProp) {
+        val = this.prop.apply(this, arguments);
+        
+        if (typeof val === 'string')
+            return val;
+    }
+    
+    return '';
 };
 
 /**
